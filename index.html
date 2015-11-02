@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>daemonize &mdash; daemonize 2.3.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="daemonize 2.3.1 documentation" href="#"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> daemonize
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">daemonize </a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#file-descriptors">File descriptors</a></li>
+<li><a class="reference internal" href="#module-daemonize">API</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">daemonize</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>daemonize </li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="daemonize-build-status">
+<h1>daemonize <a class="reference external" href="http://travis-ci.org/thesharp/daemonize"><img alt="Build Status" src="https://secure.travis-ci.org/thesharp/daemonize.png" /></a><a class="headerlink" href="#daemonize-build-status" title="Permalink to this headline">¶</a></h1>
+<p><strong>daemonize</strong> is a library for writing system daemons in Python. It has
+some bits from
+<a class="reference external" href="http://daemonize.sourceforge.net">daemonize.sourceforge.net</a>. It is
+distributed under MIT license.</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>It is tested under following Python versions:</p>
+<ul class="simple">
+<li>2.6</li>
+<li>2.7</li>
+<li>3.3</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>You can install it from Python Package Index (PyPI):</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install daemonize
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">daemonize</span> <span class="kn">import</span> <span class="n">Daemonize</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="s">&quot;/tmp/test.pid&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">daemon</span> <span class="o">=</span> <span class="n">Daemonize</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="s">&quot;test_app&quot;</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="n">pid</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">main</span><span class="p">)</span>
+<span class="n">daemon</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-descriptors">
+<h2>File descriptors<a class="headerlink" href="#file-descriptors" title="Permalink to this headline">¶</a></h2>
+<p>Daemonize object&#8217;s constructor understands the optional argument
+<strong>keep_fds</strong> which contains a list of FDs which should not be closed.
+For example:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">daemonize</span> <span class="kn">import</span> <span class="n">Daemonize</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="s">&quot;/tmp/test.pid&quot;</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s">&quot;/tmp/test.log&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+<span class="n">keep_fds</span> <span class="o">=</span> <span class="p">[</span><span class="n">fh</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Test&quot;</span><span class="p">)</span>
+
+<span class="n">daemon</span> <span class="o">=</span> <span class="n">Daemonize</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="s">&quot;test_app&quot;</span><span class="p">,</span> <span class="n">pid</span><span class="o">=</span><span class="n">pid</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">main</span><span class="p">,</span> <span class="n">keep_fds</span><span class="o">=</span><span class="n">keep_fds</span><span class="p">)</span>
+<span class="n">daemon</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-daemonize">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-daemonize" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="daemonize.Daemonize">
+<em class="property">class </em><code class="descclassname">daemonize.</code><code class="descname">Daemonize</code><span class="sig-paren">(</span><em>app</em>, <em>pid</em>, <em>action</em>, <em>keep_fds=None</em>, <em>auto_close_fds=True</em>, <em>privileged_action=None</em>, <em>user=None</em>, <em>group=None</em>, <em>verbose=False</em>, <em>logger=None</em>, <em>foreground=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/daemonize.html#Daemonize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#daemonize.Daemonize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Daemonize object.</p>
+<p>Object constructor expects three arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>app</strong> &#8211; contains the application name which will be sent to syslog.</li>
+<li><strong>pid</strong> &#8211; path to the pidfile.</li>
+<li><strong>action</strong> &#8211; your custom function which will be executed after daemonization.</li>
+<li><strong>keep_fds</strong> &#8211; optional list of fds which should not be closed.</li>
+<li><strong>auto_close_fds</strong> &#8211; optional parameter to not close opened fds.</li>
+<li><strong>privileged_action</strong> &#8211; action that will be executed before drop privileges if user or
+group parameter is provided.
+If you want to transfer anything from privileged_action to action, such as
+opened privileged file descriptor, you should return it from
+privileged_action function and catch it inside action function.</li>
+<li><strong>user</strong> &#8211; drop privileges to this user if provided.</li>
+<li><strong>group</strong> &#8211; drop privileges to this group if provided.</li>
+<li><strong>verbose</strong> &#8211; send debug messages to logger if provided.</li>
+<li><strong>logger</strong> &#8211; use this logger object instead of creating new one, if provided.</li>
+<li><strong>foreground</strong> &#8211; stay in foreground; do not fork (for debugging)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="daemonize.Daemonize.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/daemonize.html#Daemonize.exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#daemonize.Daemonize.exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleanup pid file at exit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="daemonize.Daemonize.sigterm">
+<code class="descname">sigterm</code><span class="sig-paren">(</span><em>signum</em>, <em>frame</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/daemonize.html#Daemonize.sigterm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#daemonize.Daemonize.sigterm" title="Permalink to this definition">¶</a></dt>
+<dd><p>These actions will be done after SIGTERM.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="daemonize.Daemonize.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/daemonize.html#Daemonize.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#daemonize.Daemonize.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start daemonization process.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Ilya Otyutskiy.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
